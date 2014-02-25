@@ -1,0 +1,10 @@
+{
+	"name": "JobScraper",
+	"description": "Scrapes LinkedIn job postings for things we are interested in",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"express": "~3.3.4",
+		"ejs": "0.8.5"
+	}
+}
