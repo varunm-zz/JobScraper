@@ -3,6 +3,7 @@ var http = require('http');
 var passport = require('passport');
 var util = require('util');
 var LinkedInStrategy = require('passport-linkedin').Strategy;
+var api_keys = require(__dirname + '/config/keys');
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
@@ -19,8 +20,8 @@ app.use(express.logger());
 app.use(express.methodOverride());
 
 // API keys and such
-var LINKEDIN_API_KEY = "ASK ALEX FOR THIS";
-var LINKEDIN_SECRET_KEY = "ASK ALEX FOR THIS";
+var LINKEDIN_API_KEY = api_keys.api_key;
+var LINKEDIN_SECRET_KEY = api_keys.secret_key;
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -31,8 +32,8 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new LinkedInStrategy({
-    consumerKey: 'ASK ALEX FOR THIS',
-    consumerSecret: 'ASK ALEX FOR THIS',
+    consumerKey: LINKEDIN_API_KEY,
+    consumerSecret: LINKEDIN_SECRET_KEY,
     callbackURL: "http://localhost:3000/auth/linkedin/callback"
   },
   function(token, tokenSecret, profile, done) {
