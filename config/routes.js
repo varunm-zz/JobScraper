@@ -4,4 +4,6 @@ module.exports = function(app){
 
 	// routes
 	app.get('/', home.index);
+	app.post('/search', home.search);
+	app.get('/test', home.test);
 }
