@@ -5,10 +5,11 @@ exports.index = function(req, res) {
 }
 
 exports.search = function(req, res) {
-	var title = req.params.title;
-	request('http://api.linkedin.com/v1/jobs/1337', function(err, response, body) {
-		console.log(response);
-		res.render('searchResults', {'title': title});
+	var title = req.body.title;
+	var token = passport.session.token;
+	var url = 'https://api.linkedin.com/v1/people/~?oauth2_access_token=' + token;
+	request(url, function(err, response, body) {
+		res.render('searchResults', {'title': title, 'body': body});
 	});
 }
 
