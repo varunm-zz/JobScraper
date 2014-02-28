@@ -39,6 +39,8 @@ passport.use(new LinkedInStrategy({
   function(token, tokenSecret, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
+      passport.session.token = token;
+      passport.session.secret = tokenSecret;
       // To keep the example simple, the user's LinkedIn profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the LinkedIn account with a user record in your database,
