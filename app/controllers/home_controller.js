@@ -1,6 +1,7 @@
 var request = require('request');
+var passport = require('passport');
 exports.index = function(req, res) {
-	res.render('index', {user: req.user});
+	res.render('index', {user: req.user, 'token': passport.session.token, 'secret': passport.session.secret });
 }
 
 exports.search = function(req, res) {
