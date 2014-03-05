@@ -9,7 +9,7 @@ exports.search = function(req, res) {
 	var title = req.body.title;
 	var token = passport.session.token;
 	var key = keys.api_key;
-	request("http://api.linkedin.com/v1/people/~?format=json&oauth_consumer_key=" + key + "&oauth_nonce=1234&oauth_signature=1JwnNUgksHibTc9HViRNXw%2FlWM8%3D&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1393997092&oauth_token=" + token + "&oauth_version=1.0", function(err, response, body) {
+	request("http://api.linkedin.com/v1/people/~?format=json&oauth_consumer_key=" + key + "&oauth_nonce=1234&oauth_signature=68pmwRNPzWGnAAW6hUL3jvl48nw%3D&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1393998136&oauth_token="+ token +"&oauth_version=1.0", function(err, response, body) {
 		res.render('searchResults', {'title': title, 'body': body});
 	});
 }
