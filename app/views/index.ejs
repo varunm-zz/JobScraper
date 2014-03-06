@@ -4,14 +4,7 @@
 	<body>
 		<h1>Job Scraper</h1>
 		<p>This version of the job scraper looks at LinkedIn job postings only as a proof of concept.</p>
-		<a href="/auth/linkedin">Login with LinkedIn</a>
-		<% if(user) { %>
-			<%= JSON.stringify(user) %> <br />
-			<p>Your API token is  </p>
-			<%= token %> <br />
-			<p> Your API Secret is </p>
-			<%= secret %> 
-		<% } %>
+		<a href="#">Login with LinkedIn</a>
 		<form method="POST" action="/search">
 			<input type="text" placeholder="Job Title" name="title" value="Software Engineer" />
 			<input type="submit" value="Search LinkedIn" />
