@@ -7,4 +7,5 @@ module.exports = function(app){
 	app.post('/search', home.search);
 	app.get('/login', home.login);
 	app.get('/return', home.return);
+	app.get('/gotKey', home.gotKey);
 }

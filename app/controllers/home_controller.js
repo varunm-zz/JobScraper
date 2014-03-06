@@ -18,5 +18,14 @@ exports.login = function(req, res) {
 
 exports.return = function(req, res) {
 	// I don't think this always works... I don't know why. But 4 in a row is enough for a commit
-	res.send("code is " + req.param('code') + "\n state is " + req.body.state);
+	var redirect_url = 'http://localhost:3000/gotKey';
+	var client_id = keys.api_key;
+	var client_secret = keys.secret_key;
+	var code = req.param('code');
+	var post_url = "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code="+code+"&redirect_uri="+redirect_url+"&client_id="+client_id+"&client_secret="+client_secret;
+	// need to send a post request to this url and listen for a response ^
+};
+
+exports.gotKey = function(req, res) {
+	res.send("got to here");
 };
