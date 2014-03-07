@@ -1,5 +1,6 @@
 var request = require('request');
 var keys = require('../../config/keys');
+// these should be included in node, so they're not in package.json
 var http = require('http');
 var https = require('https');
 var url = require('url');
@@ -9,7 +10,16 @@ exports.index = function(req, res) {
 };
 
 exports.search = function(req, res) {
-	res.render('searchResults', {'title': req.body.title});
+	// need to request access for this here: https://help.linkedin.com/app/api-dvr
+	request("https://api.linkedin.com/v1/job-search?sort=R&format=json&oauth2_access_token=" + req.session.oauth_token, function(error, response, body) {
+		if(error) {
+			console.log("error with request: " + error);
+			return res.render('searchResults', {'title': req.body.title});
+		}
+		else {
+			return res.render('searchResults', {'title': req.body.title, 'results': body});
+		}
+	});
 };
 
 exports.login = function(req, res) {
