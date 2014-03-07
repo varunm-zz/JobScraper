@@ -5,7 +5,7 @@ var https = require('https');
 var url = require('url');
 
 exports.index = function(req, res) {
-	res.render('index');
+	res.render('index', {token: req.session.oauth_token});
 };
 
 exports.search = function(req, res) {
@@ -24,7 +24,7 @@ exports.return = function(req, res) {
 	var queryObject = url.parse(req.url, true).query;
 	var code = queryObject.code;
 	// If there is a 'code' param, we have returned from part A and should move to part b
-	res.send("here. The code is " + code);
+	// res.send("here. The code is " + code);
 	if(code) {
 		// we need to make one more call to LinkedIn
 		var callbackURL = "http://localhost:3000/return";
@@ -36,18 +36,16 @@ exports.return = function(req, res) {
 			path: "/uas/oauth2/accessToken?grant_type=authorization_code&code=" + code + "&redirect_uri=" + callbackURL + "&client_id=" + APIKey + "&client_secret=" + APIKeySecret
 		};
 		var httpRequest = https.request(options, function(httpResponse) {
-			console.log("we out here");
-			console.log("statusCode: ", httpResponse.statusCode);
-			console.log("headers: ", httpResponse.headers);
 			httpResponse.on('data', function(d) {
-				console.log("got data");
 				var access_token = JSON.parse(d).access_token;
-				res.send("access_token is " + access_token);
+				req.session.oauth_token = access_token;
+				return res.redirect("/");
 			});
 		});
 		httpRequest.end();
 	}
 	else {
+		// shouldn't get here but I'll keep it
 		res.send("got it");
 	}
 };
