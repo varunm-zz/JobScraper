@@ -22,10 +22,34 @@ exports.login = function(req, res) {
 
 exports.return = function(req, res) {
 	var queryObject = url.parse(req.url, true).query;
-	console.log("We are in the return");
+	var code = queryObject.code;
 	// If there is a 'code' param, we have returned from part A and should move to part b
-	res.send("here. The code is " + queryObject.code);
-
+	res.send("here. The code is " + code);
+	if(code) {
+		// we need to make one more call to LinkedIn
+		var callbackURL = "http://localhost:3000/return";
+		var APIKey = keys.api_key;
+		var APIKeySecret = keys.secret_key;
+		var options = {
+			host: 'api.linkedin.com',
+			port: 443,
+			path: "/uas/oauth2/accessToken?grant_type=authorization_code&code=" + code + "&redirect_uri=" + callbackURL + "&client_id=" + APIKey + "&client_secret=" + APIKeySecret
+		};
+		var httpRequest = https.request(options, function(httpResponse) {
+			console.log("we out here");
+			console.log("statusCode: ", httpResponse.statusCode);
+			console.log("headers: ", httpResponse.headers);
+			httpResponse.on('data', function(d) {
+				console.log("got data");
+				var access_token = JSON.parse(d).access_token;
+				res.send("access_token is " + access_token);
+			});
+		});
+		httpRequest.end();
+	}
+	else {
+		res.send("got it");
+	}
 };
 
 
