@@ -16,4 +16,10 @@ to start the server. Go to
 ```
 localhost:3000
 ```
+I've been using this to get queries for what we are looking for
+https://developer.linkedin.com/rest-console
+
+And I've been using this to debug authentication problems
+http://developer.linkedin.com/oauth-test-console
+
 :octocat:
