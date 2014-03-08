@@ -5,12 +5,14 @@
 		<h1>Job Scraper</h1>
 		<p>This version of the job scraper looks at LinkedIn job postings only as a proof of concept.</p>
 		<% if(token) { %>
-			<%= token %>
+			<b>Successfully logged in. You can begin your search below.</b> <br />
+			<form method="POST" action="/search">
+				<input type="text" placeholder="Job Title" name="title" value="Software Engineer" />
+				<input type="submit" value="Search LinkedIn" />
+			</form>
+		<% } else { %>
+			<b>You must be a logged in user to use this application.</b> <br />
+			<a href="/login">Login with LinkedIn</a>
 		<% } %>
-		<a href="/login">Login with LinkedIn</a>
-		<form method="POST" action="/search">
-			<input type="text" placeholder="Job Title" name="title" value="Software Engineer" />
-			<input type="submit" value="Search LinkedIn" />
-		</form>
 	</body>
 </html>
