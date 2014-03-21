@@ -4,6 +4,9 @@
 	<body>
 		<h1>Job Scraper</h1>
 		<p>This version of the job scraper looks at LinkedIn job postings only as a proof of concept.</p>
+		<% if(token) { %>
+			<%= token %>
+		<% } %>
 		<a href="/login">Login with LinkedIn</a>
 		<form method="POST" action="/search">
 			<input type="text" placeholder="Job Title" name="title" value="Software Engineer" />

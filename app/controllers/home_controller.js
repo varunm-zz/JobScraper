@@ -1,11 +1,25 @@
 var request = require('request');
 var keys = require('../../config/keys');
+// these should be included in node, so they're not in package.json
+var http = require('http');
+var https = require('https');
+var url = require('url');
+
 exports.index = function(req, res) {
-	res.render('index');
+	res.render('index', {token: req.session.oauth_token});
 };
 
 exports.search = function(req, res) {
-	res.render('searchResults', {'title': req.body.title});
+	// need to request access for this here: https://help.linkedin.com/app/api-dvr
+	request("https://api.linkedin.com/v1/job-search?sort=R&format=json&oauth2_access_token=" + req.session.oauth_token, function(error, response, body) {
+		if(error) {
+			console.log("error with request: " + error);
+			return res.render('searchResults', {'title': req.body.title});
+		}
+		else {
+			return res.render('searchResults', {'title': req.body.title, 'results': body});
+		}
+	});
 };
 
 exports.login = function(req, res) {
@@ -17,41 +31,35 @@ exports.login = function(req, res) {
 };
 
 exports.return = function(req, res) {
-		var redirect_uri = 'http://localhost:3000/return';
-		var client_id = keys.api_key;
-		var client_secret = keys.secret_key;
-		var code = req.param('code');
-		// this is driving me crazy. I don't understand how this is supposed to work.
-		// I am quite literally copying things from their website and trying it and it fails.
-		// client_id and secret are copied from the developer page. The redirect uri is specified on the developer page as well.
-		// the code they give me is the code I send back, and I copied the post request from the how to authenticate article and
-		// it does not work. I don't think there is any more I can do.
-
-		// here I just put every option in as a parameter
-		var post_uri = "https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=" + code + "&redirect_uri=" + redirect_uri + "&client_id=" + client_id + "&client_secret=" + client_secret;
-		// this gives me this error: {"error":"invalid_request","error_description":"missing required parameters, includes an invalid parameter value, parameter more then once. : Unable to retrieve access token : appId or redirect uri does not match authorization code or authorization code expired"}
-		// and here I try to put it in as a form body for a post request
-		// var post_uri = "https://www.linkedin.com/uas/oauth2/accessToken"
-		// request({
-		// 	uri: post_uri,
-		// 	method: 'POST',
-		// form: {
-		// 		grant_type: "authorization_code",
-		// 		code: code,
-		// 		redirect_uri: redirect_uri,
-		// 		client_id: client_id,
-		// 		client_secret: client_secret
-		//   },
-		// }, function(err, response, body) {
-		// 	if(err) {
-		// 		console.log("You got an error");
-		// 	}
-		// 	else {
-		// 		res.send(body);
-		// 	}
-		// });
-		// with this I get the error: {"error":"invalid_request","error_description":"missing required parameters, includes an invalid parameter value, parameter more then once. : Unable to retrieve access token : appId or redirect uri does not match authorization code or authorization code expired"}
+	var queryObject = url.parse(req.url, true).query;
+	var code = queryObject.code;
+	// If there is a 'code' param, we have returned from part A and should move to part b
+	// res.send("here. The code is " + code);
+	if(code) {
+		// we need to make one more call to LinkedIn
+		var callbackURL = "http://localhost:3000/return";
+		var APIKey = keys.api_key;
+		var APIKeySecret = keys.secret_key;
+		var options = {
+			host: 'api.linkedin.com',
+			port: 443,
+			path: "/uas/oauth2/accessToken?grant_type=authorization_code&code=" + code + "&redirect_uri=" + callbackURL + "&client_id=" + APIKey + "&client_secret=" + APIKeySecret
+		};
+		var httpRequest = https.request(options, function(httpResponse) {
+			httpResponse.on('data', function(d) {
+				var access_token = JSON.parse(d).access_token;
+				req.session.oauth_token = access_token;
+				return res.redirect("/");
+			});
+		});
+		httpRequest.end();
+	}
+	else {
+		// shouldn't get here but I'll keep it
+		res.send("got it");
+	}
 };
+
 
 exports.post_return = function(req, res) {
 	res.send("got to here");
