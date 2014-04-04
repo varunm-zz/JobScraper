@@ -15,7 +15,7 @@ var mongodb = require('mongodb');
 /*
  * Error handling function
  */
-var doError(error) {
+var doError = function(error) {
   util.debug("Error: " + error);
   throw new Error(error);
 }
