@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
-	<head></head>
+	<head>
+		<% include head %>
+	</head>
 	<body>
-		<h1>Job Scraper</h1>
-		<p>This version of the job scraper looks at LinkedIn job postings only as a proof of concept.</p>
-		<% if(token) { %>
-			<%= token %>
-		<% } %>
-		<a href="/login">Login with LinkedIn</a>
-		<form method="POST" action="/search">
-			<input type="text" placeholder="Job Title" name="title" value="Software Engineer" />
-			<input type="submit" value="Search LinkedIn" />
-		</form>
+		<% include navigation %>
+		<div id="wrapper">
+			<h1>Job Scraper</h1>
+			<p>This version of the job scraper looks at LinkedIn job postings only as a proof of concept.</p>
+			<% if(token) { %>
+				<b>Successfully logged in. You can begin your search below.</b> <br />
+				<form method="POST" action="/search">
+					<input type="text" placeholder="Job Title" name="title" value="Software Engineer" /> <br />
+					<input type="submit" value="Search LinkedIn" />
+				</form>
+			<% } else { %>
+				<b>You must be a logged in user to use this application.</b> <br /> <br />
+				<a class="linkedIn" href="/login">Login with LinkedIn</a>
+			<% } %>
+		</div>
 	</body>
 </html>
