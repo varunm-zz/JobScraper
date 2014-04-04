@@ -9,10 +9,22 @@
 		<% include navigation %>
 		<div id="wrapper">
 			<h1>Search Results for <%= title %> </h1>
-			<p>We are currently awaiting access to the Job Search API, this API search results in the following error:</p>
-			<% if(results) { %>
-				<%= JSON.stringify(results) %>
-			<% } %>
+			<table>
+				<thead>
+					<th>Company</th>
+					<th>Location</th>
+					<th>Description</th>
+				</thead>
+				<tbody>
+					<% results.forEach(function(job) { %>
+						<tr>
+							<td><%= job.company.name %></td>
+							<td><%= job.descriptionSnippet %></td>
+							<td><%= job.locationDescription %></td>
+						</tr>
+					<% }); %>
+				</tbody>
+			</table>
 		</div>
 	</body>
 </html>

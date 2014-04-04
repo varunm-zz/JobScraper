@@ -12,8 +12,6 @@ exports.index = function(req, res) {
 exports.search = function(req, res) {
 	// replaces spaces with %20 for the API call
 	var title = req.body.title.replace(" ", "%20");
-
-	// need to request access for this here: https://help.linkedin.com/app/api-dvr
 	request("https://api.linkedin.com/v1/job-search?job-title=" + title + "&sort=R&format=json&oauth2_access_token=" + req.session.oauth_token, function(error, response, body) {
 		if(error) {
 			console.log("error with request: " + error);
@@ -22,7 +20,8 @@ exports.search = function(req, res) {
 		}
 		else {
 			// sending the title from the body because it is not modified from what was sent to this action
-			return res.render('searchResults', {'title': req.body.title, 'results': body});
+			var results = JSON.parse(body);
+			return res.render('searchResults', {'title': req.body.title, 'results': results.jobs.values});
 		}
 	});
 };
