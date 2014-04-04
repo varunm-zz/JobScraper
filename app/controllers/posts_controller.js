@@ -1,6 +1,10 @@
 var post = require('../models/post.js');
 
-// GET /posts
+/*
+ * GET /posts, list all of them
+ */
 exports.index = function(req, res) {
-  res.render('posts/index');
+  post.getAll(function(docs) {
+    res.render('posts/index', {posts: docs});
+  });
 }

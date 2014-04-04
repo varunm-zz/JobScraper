@@ -6,8 +6,25 @@
   <body>
     <% include ../navigation %>
     <div id="wrapper">
-      <h1>Job Scraper</h1>
-        <b>Here</b>
+      <h1>Scraped Posts</h1>
+      <% if(posts.length == 0) { %>
+        <em>There are no posts to display</em>
+      <% } else {%>
+        <table>
+          <thead>
+            <th>Name</th>
+            <th>LinkedIn Code</th>
+          </thead>
+          <tbody>
+            <% posts.forEach(function(post) { %>
+              <tr>
+                <td><%= post.name %></td>
+                <td><%= post.code %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% }%>
     </div>
   </body>
 </html>

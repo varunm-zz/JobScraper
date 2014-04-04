@@ -43,3 +43,25 @@ exports.insert = function(object, callback) {
     });
   });
 }
+
+/*
+ * gets all of the posts
+ */
+exports.getAll = function(callback) {
+  // connect to the DB
+  mongoClient.connect(server+database, function(err, db) {
+    // if there is an error, go to the helper
+    if(err) {
+      doError(err);
+    }
+    // get all of the posts
+    var crsr = db.collection(collection).find();
+    crsr.toArray(function(err, docs) {
+      // if there is error go to the helper
+      if(err) {
+        doError(err);
+      }
+      callback(docs);
+    });
+  });
+}
