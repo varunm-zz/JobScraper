@@ -9,4 +9,5 @@ module.exports = function(app){
 	app.get('/return', home.return);
 	app.post('/return', home.post_return);
 	app.get('/posts', posts.index);
+	app.get('/jobquery/:id', posts.show);
 }

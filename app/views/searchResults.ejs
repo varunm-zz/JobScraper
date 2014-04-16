@@ -14,6 +14,7 @@
 					<th>Company</th>
 					<th>Location</th>
 					<th>Description</th>
+					<th>Show</th>
 				</thead>
 				<tbody>
 					<% results.forEach(function(job) { %>
@@ -21,6 +22,7 @@
 							<td><%= job.company.name %></td>
 							<td><%= job.descriptionSnippet %></td>
 							<td><%= job.locationDescription %></td>
+							<td><a href="/jobquery/<%=job.id %>">Details</a></td>
 						</tr>
 					<% }); %>
 				</tbody>
