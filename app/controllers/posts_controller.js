@@ -17,14 +17,17 @@ exports.show = function(req, res) {
   var jobId = req.params.id;
   var request_uri = "https://api.linkedin.com/v1/jobs";
   request_uri += '/' + jobId;
-  request_uri += "company:(id,name),position:(title,location,job-functions,industries,job-type,experience-level),skills-and-experience,description-snippet,description,salary,job-poster:(id,first-name,last-name,headline),referral-bonus,site-job-url,location-description)";
+  request_uri += "?company:(id,name),position:(title,location,job-functions,industries,job-type,experience-level),skills-and-experience,description-snippet,description,salary,job-poster:(id,first-name,last-name,headline),referral-bonus,site-job-url,location-description)";
   request_uri += "&format=json&oauth2_access_token=" + req.session.oauth_token;
+  console.log('request_uri is ' + request_uri);
   request(request_uri, function(error, response, body) {
     if(error) {
+      console.log('there is/was an error!');
       return res.render('posts/show', {'error': error, 'job': undefined});
     }
     else {
-      return res.render('posts/show', {'job': 'here lol!'});
+      var results = JSON.parse(body);
+      return res.render('posts/show', {'job': results});
     }
   });
 }
