@@ -27,7 +27,42 @@ exports.show = function(req, res) {
     }
     else {
       var results = JSON.parse(body);
+      req.session.post = results;
       return res.render('posts/show', {'job': results});
     }
   });
+}
+
+exports.new = function(req, res) {
+  res.render('posts/new');
+}
+
+exports.create = function(req, res) {
+  post.insert(req.body, function(err, crsr) {
+    if(err) {
+      console.log("there was an error!");
+      res.redirect('/');
+    }
+    else {
+      console.log(req.body);
+      console.log(JSON.stringify(crsr));
+      res.send("done");
+    }
+  });
+}
+
+exports.saveFromShow = function(req, res) {
+  if(req.session && req.session.post) {
+    post.insert(req.session.post, function(err, crsr) {
+      if(err) {
+        req.session.post = undefined;
+        console.log('There was an error!');
+        res.redirect('/');
+      }
+      else {
+        req.session.post = undefined;
+        res.render('/posts/show', {'job': crsr});
+      }
+    });
+  }
 }

@@ -12,14 +12,16 @@
       <% } else {%>
         <table>
           <thead>
-            <th>Name</th>
-            <th>LinkedIn Code</th>
+            <th>Company</th>
+            <th></th>
+            <th>Description</th>
           </thead>
           <tbody>
             <% posts.forEach(function(post) { %>
               <tr>
-                <td><%= post.name %></td>
-                <td><%= post.code %></td>
+                <td><%= post.company.name %></td>
+                <td><%= post.description %></td>
+                <td><a href="#">Details</a></td>
               </tr>
             <% }); %>
           </tbody>

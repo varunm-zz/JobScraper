@@ -19,4 +19,5 @@ var LINKEDIN_API_KEY = api_keys.api_key;
 var LINKEDIN_SECRET_KEY = api_keys.secret_key;
 
 console.log('listening on port 3000');
+console.log('local mongo database listening at 127.0.0.1');
 app.listen(3000);
