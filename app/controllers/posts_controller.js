@@ -61,8 +61,16 @@ exports.saveFromShow = function(req, res) {
       }
       else {
         req.session.post = undefined;
-        res.render('/posts/show', {'job': crsr});
+        console.log(crsr);
+        console.log(JSON.stringify(crsr));
+        res.render('posts/show', {'job': crsr});
       }
     });
   }
+}
+
+exports.showFromSaved = function(req, res) {
+  post.findByLinkedInId(req.param('id'), function(err, docs) {
+    exports.render('posts/show', {'job': docs});
+  });
 }

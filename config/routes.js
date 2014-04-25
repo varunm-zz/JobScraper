@@ -13,4 +13,5 @@ module.exports = function(app){
 	app.get('/posts/new', posts.new);
 	app.post('/posts', posts.create);
 	app.get('/posts/saveFromPost', posts.saveFromShow);
+	app.get('/saved/:id', posts.showFromSaved);
 }

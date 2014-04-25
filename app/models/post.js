@@ -65,3 +65,18 @@ exports.getAll = function(callback) {
     });
   });
 }
+
+exports.showFromSaved = function(linkedInId, callback) {
+  mongoClient.connect(server+database, function(err, db) {
+    if(err) {
+      doError(err);
+    }
+    var crsr = db.collection(collection).find({id: linkedInId});
+    crsr.toArray(function(err, docs) {
+      if(err) {
+        doError(err);
+      }
+      callback(err, docs[0]);
+    });
+  });
+}
