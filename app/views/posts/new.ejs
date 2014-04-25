@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../head %>
+  </head>
+  <body>
+    <% include ../navigation %>
+    <div id="wrapper">
+      <h1>New Post</h1>
+      <form action="/posts" method="POST">
+        <b>Name</b>
+        <input type="text" name="name"><br />
+        <b>Number</b>
+        <input type="number" name="number"><br />
+        <input type="submit" value="Create"><br />
+      </form>
+    </div>
+  </body>
+</html>
