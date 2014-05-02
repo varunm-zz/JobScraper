@@ -41,7 +41,7 @@ exports.return = function(req, res) {
 	// res.send("here. The code is " + code);
 	if(code) {
 		// we need to make one more call to LinkedIn
-		var redirect_uri = "http://162.243.14.83:3000/return";
+		var redirectURL = "http://162.243.14.83:3000/return";
 		var APIKey = keys.api_key;
 		var APIKeySecret = keys.secret_key;
 		var options = {
