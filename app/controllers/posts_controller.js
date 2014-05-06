@@ -33,10 +33,12 @@ exports.show = function(req, res) {
   });
 }
 
+// renders the new post page, not necessary but will still have it for development purposes
 exports.new = function(req, res) {
   res.render('posts/new');
 }
 
+// creates a new post not necessary but will still have it for development purposes
 exports.create = function(req, res) {
   post.insert(req.body, function(err, crsr) {
     if(err) {
@@ -51,6 +53,7 @@ exports.create = function(req, res) {
   });
 }
 
+// saves a post from the post show page
 exports.saveFromShow = function(req, res) {
   if(req.session && req.session.post) {
     post.insert(req.session.post, function(err, crsr) {
@@ -69,8 +72,9 @@ exports.saveFromShow = function(req, res) {
   }
 }
 
+// renders the show page with a post that is in the mongo db
 exports.showFromSaved = function(req, res) {
-  post.findByLinkedInId(req.param('id'), function(err, docs) {
+  post.showFromSaved(req.param('id'), function(err, docs) {
     exports.render('posts/show', {'job': docs});
   });
 }

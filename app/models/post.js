@@ -66,6 +66,9 @@ exports.getAll = function(callback) {
   });
 }
 
+/*
+ * Saves a post after getting it from linkedin 
+ */
 exports.showFromSaved = function(linkedInId, callback) {
   mongoClient.connect(server+database, function(err, db) {
     if(err) {

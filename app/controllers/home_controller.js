@@ -5,10 +5,12 @@ var http = require('http');
 var https = require('https');
 var url = require('url');
 
+// renders the home page
 exports.index = function(req, res) {
 	res.render('index', {token: req.session.oauth_token});
 };
 
+// searches linked in for jobs matching the query from the home page
 exports.search = function(req, res) {
 	// replaces spaces with %20 for the API call
 	var title = req.body.title.replace(" ", "%20");
@@ -26,6 +28,7 @@ exports.search = function(req, res) {
 	});
 };
 
+// begins the linkedin login process
 exports.login = function(req, res) {
 	var client_id = keys.api_key;
 	var state = keys.state;
@@ -34,6 +37,9 @@ exports.login = function(req, res) {
 	return res.redirect(auth_url);
 };
 
+// the return method that is used as the callback url for linkedin. It has two different
+// functionalities for each of the callback URLs
+// the callback URLs must be identical, so this is how I'm dealing with that
 exports.return = function(req, res) {
 	var queryObject = url.parse(req.url, true).query;
 	var code = queryObject.code;
@@ -64,7 +70,7 @@ exports.return = function(req, res) {
 	}
 };
 
-
+// I forget what this does...
 exports.post_return = function(req, res) {
 	res.send("got to here");
 };
