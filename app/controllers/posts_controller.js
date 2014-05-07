@@ -75,6 +75,6 @@ exports.saveFromShow = function(req, res) {
 // renders the show page with a post that is in the mongo db
 exports.showFromSaved = function(req, res) {
   post.showFromSaved(req.param('id'), function(err, docs) {
-    exports.render('posts/show', {'job': docs});
+    return res.render('saved/show', {'job': docs});
   });
 }

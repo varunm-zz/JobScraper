@@ -67,14 +67,15 @@ exports.getAll = function(callback) {
 }
 
 /*
- * Saves a post after getting it from linkedin 
+ * Saves a post after getting it from linkedin
  */
 exports.showFromSaved = function(linkedInId, callback) {
+  var theId = parseInt(linkedInId);
   mongoClient.connect(server+database, function(err, db) {
     if(err) {
       doError(err);
     }
-    var crsr = db.collection(collection).find({id: linkedInId});
+    var crsr = db.collection(collection).find({'id': theId});
     crsr.toArray(function(err, docs) {
       if(err) {
         doError(err);
