@@ -78,3 +78,28 @@ exports.showFromSaved = function(req, res) {
     return res.render('saved/show', {'job': docs});
   });
 }
+
+exports.saveFromResults = function(req, res) {
+  var jobId = req.params.id;
+  var request_uri = "https://api.linkedin.com/v1/jobs";
+  request_uri += '/' + jobId;
+  request_uri += ":(id,customer-job-code,active,posting-date,expiration-date,posting-timestamp,company:(id,name),position:(title,location,job-functions,industries,job-type,experience-level),skills-and-experience,description-snippet,description,salary,job-poster:(id,first-name,last-name,headline),referral-bonus,site-job-url,location-description)";
+  request_uri += "?format=json&oauth2_access_token=" + req.session.oauth_token;
+  request(request_uri, function(error, response, body) {
+    if(error) {
+      console.log('there is/was an error!');
+      return res.render('posts/show', {'error': error, 'job': undefined});
+    }
+    else {
+      var results = JSON.parse(body);
+      post.insert(results, function(err, crsr) {
+        if(err) {
+          console.log('there was an error!');
+          return res.redirect('back');
+        }
+        return res.render('posts/show', {'job': results});
+      });
+    }
+  });
+
+}
