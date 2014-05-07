@@ -66,7 +66,7 @@ exports.saveFromShow = function(req, res) {
         req.session.post = undefined;
         console.log(crsr);
         console.log(JSON.stringify(crsr));
-        res.render('posts/show', {'job': crsr});
+        res.render('saved/show', {'job': crsr[0]});
       }
     });
   }
