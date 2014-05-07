@@ -8,7 +8,12 @@
     <div id="wrapper">
       <h1><%= job.company.name %></h1>
       <h2><%= job.position.title %></h2>
-      <%= JSON.stringify(job) %>
+      <ul>
+        <% for(n in job) { %>
+          <li><b><%= n %></b>: <%= JSON.stringify(job[n]) %> </li>
+        <% } %>
+      </ul>
+      <br />
       <a href="/posts/saveFromPost">Save this post</a>
     </div>
   </body>
