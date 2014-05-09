@@ -1,5 +1,6 @@
 var post = require('../models/post.js');
 var request = require('request');
+var async = require('async');
 
 /*
  * GET /posts, list all of them
