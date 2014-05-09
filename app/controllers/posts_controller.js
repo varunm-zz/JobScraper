@@ -103,3 +103,55 @@ exports.saveFromResults = function(req, res) {
   });
 
 }
+
+exports.requestAndSave = function(req, res) {
+  var title = req.session.title;
+  request("https://api.linkedin.com/v1/job-search?job-title=" + title + "&sort=R&format=json&oauth2_access_token=" + req.session.oauth_token, function(error, response, body) {
+    if(error) {
+      console.log("error with request: " + error);
+      // sending the title from the body because it is not modified from what was sent to this action
+      return res.render('searchResults', {'title': req.body.title});
+    }
+    else {
+      // sending the title from the body because it is not modified from what was sent to this action
+      var results = JSON.parse(body);
+      return res.render('searchResults', {'title': req.body.title, 'results': results.jobs.values});
+      async.each(results.jobs.values, function(oneJob, innerCallback) {
+        savePost(oneJob.id, function() {
+          setTimeout(innerCallback, 10000);
+        });
+      }, function(asyncError) {
+        if(asyncError) {
+          console.log('async error saving posts');
+        }
+        else {
+          console.log('posts finished saving');
+        }
+      });
+    }
+  });
+  return res.send('here');
+}
+
+var savePost = function(linkedInId, done) {
+  var request_uri = "https://api.linkedin.com/v1/jobs";
+  request_uri += '/' + jobId;
+  request_uri += ":(id,customer-job-code,active,posting-date,expiration-date,posting-timestamp,company:(id,name),position:(title,location,job-functions,industries,job-type,experience-level),skills-and-experience,description-snippet,description,salary,job-poster:(id,first-name,last-name,headline),referral-bonus,site-job-url,location-description)";
+  request_uri += "?format=json&oauth2_access_token=" + req.session.oauth_token;
+  request(requst_uri, function(error, response, body) {
+    if(error) {
+      console.log('there is an error!');
+    }
+    else {
+      post.insert(results, function(postError, saved) {
+        if(postError) {
+          console.log('error inserting post');
+        }
+        else {
+          console.log('post successfully inserted');
+          done();
+        }
+      });
+    }
+  });
+}

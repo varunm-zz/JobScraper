@@ -15,4 +15,5 @@ module.exports = function(app){
 	app.get('/posts/saveFromPost', posts.saveFromShow);
 	app.get('/posts/save/:id', posts.saveFromResults);
 	app.get('/saved/:id', posts.showFromSaved);
+	app.get('/posts/saveAll', posts.requestAndSave);
 }
