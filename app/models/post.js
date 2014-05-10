@@ -45,6 +45,41 @@ exports.insert = function(object, callback) {
 }
 
 /*
+ * attempts to insert a job without producing a duplicate
+ * test function for now
+ */
+exports.insert_no_dup = function(object, callback) {
+  mongoClient.connect(server+database, function(err, db) {
+    if(err) {
+      doError(err);
+    }
+    else {
+      var crsr = db.collection(collection).find({'id': object.id});
+      crsr.toArray(function(err, docs) {
+        if(err) {
+          doError(err);
+        }
+        else {
+          if(docs.length == 0) {
+            db.collection(collection).insert(object, function(err, crsr) {
+              if(err) {
+                doError(err);
+              }
+              else {
+                return callback(err, crsr);
+              }
+            });
+          }
+          else {
+            return callback(new Error('Object already exists'));
+          }
+        }
+      });
+    }
+  });
+}
+
+/*
  * gets all of the posts
  */
 exports.getAll = function(callback) {
