@@ -80,6 +80,9 @@ exports.showFromSaved = function(req, res) {
   });
 }
 
+/*
+ * Save jobs from the search result page
+ */
 exports.saveFromResults = function(req, res) {
   var jobId = req.params.id;
   var request_uri = "https://api.linkedin.com/v1/jobs";
@@ -105,6 +108,9 @@ exports.saveFromResults = function(req, res) {
 
 }
 
+/*
+ * send a search request and save all responses
+ */
 exports.requestAndSave = function(req, res) {
   var title = req.session.title;
   request("https://api.linkedin.com/v1/job-search?job-title=" + title + "&sort=R&format=json&oauth2_access_token=" + req.session.oauth_token, function(error, response, body) {
@@ -134,6 +140,9 @@ exports.requestAndSave = function(req, res) {
   return res.send('here');
 }
 
+/*
+ * save a post one at a time
+ */
 var savePost = function(linkedInId, done) {
   var request_uri = "https://api.linkedin.com/v1/jobs";
   request_uri += '/' + jobId;
