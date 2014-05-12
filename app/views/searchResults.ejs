@@ -15,14 +15,16 @@
 					<th>Location</th>
 					<th>Description</th>
 					<th>Show</th>
+					<th>Save</th>
 				</thead>
 				<tbody>
 					<% results.forEach(function(job) { %>
 						<tr>
 							<td><%= job.company.name %></td>
-							<td><%= job.descriptionSnippet %></td>
+							<td><%= job.descriptionSnippet.substr(0, 100) %></td>
 							<td><%= job.locationDescription %></td>
 							<td><a href="/jobquery/<%=job.id %>">Details</a></td>
+							<td><a href="/posts/save/<%= job.id %>">Save</a></td>
 						</tr>
 					<% }); %>
 				</tbody>

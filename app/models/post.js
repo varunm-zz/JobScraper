@@ -45,6 +45,41 @@ exports.insert = function(object, callback) {
 }
 
 /*
+ * attempts to insert a job without producing a duplicate
+ * test function for now
+ */
+exports.insert_no_dup = function(object, callback) {
+  mongoClient.connect(server+database, function(err, db) {
+    if(err) {
+      doError(err);
+    }
+    else {
+      var crsr = db.collection(collection).find({'id': object.id});
+      crsr.toArray(function(err, docs) {
+        if(err) {
+          doError(err);
+        }
+        else {
+          if(docs.length == 0) {
+            db.collection(collection).insert(object, function(err, crsr) {
+              if(err) {
+                doError(err);
+              }
+              else {
+                return callback(err, crsr);
+              }
+            });
+          }
+          else {
+            return callback(new Error('Object already exists'));
+          }
+        }
+      });
+    }
+  });
+}
+
+/*
  * gets all of the posts
  */
 exports.getAll = function(callback) {
@@ -66,12 +101,16 @@ exports.getAll = function(callback) {
   });
 }
 
+/*
+ * Saves a post after getting it from linkedin
+ */
 exports.showFromSaved = function(linkedInId, callback) {
+  var theId = parseInt(linkedInId);
   mongoClient.connect(server+database, function(err, db) {
     if(err) {
       doError(err);
     }
-    var crsr = db.collection(collection).find({id: linkedInId});
+    var crsr = db.collection(collection).find({'id': theId});
     crsr.toArray(function(err, docs) {
       if(err) {
         doError(err);

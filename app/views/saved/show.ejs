@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../head %>
+  </head>
+  <body>
+    <% include ../navigation %>
+    <div id="wrapper">
+      <% for(n in job) { %>
+        <li><b><%= n %></b>: <%= JSON.stringify(job[n]) %> </li>
+      <% } %>
+      </ul>
+      <br />
+    </div>
+  </body>
+</html>
