@@ -32,7 +32,7 @@ exports.search = function(req, res) {
 exports.login = function(req, res) {
 	var client_id = keys.api_key;
 	var state = keys.state;
-	var redirect_uri = 'http://localhost:3000/return';
+	var redirect_uri = "http://162.243.14.83:3000/return";
 	var auth_url = "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id="+client_id+"&state="+state+"&redirect_uri="+redirect_uri;
 	return res.redirect(auth_url);
 };
@@ -47,7 +47,7 @@ exports.return = function(req, res) {
 	// res.send("here. The code is " + code);
 	if(code) {
 		// we need to make one more call to LinkedIn
-		var callbackURL = "http://localhost:3000/return";
+		var redirectURL = "http://162.243.14.83:3000/return";
 		var APIKey = keys.api_key;
 		var APIKeySecret = keys.secret_key;
 		var options = {
